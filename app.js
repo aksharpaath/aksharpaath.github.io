@@ -2,7 +2,7 @@
 'use strict';
 const CFG=window.APCONFIG||{};
 const DEMO=!CFG.SUPABASE_URL||!CFG.SUPABASE_ANON_KEY;
-const V='6';
+const V='7';
 let sb=null,sbP=null;
 function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>rej(new Error('load '+src));document.head.appendChild(s)})}
 /* The Supabase client is only needed for sign-in, submitting and editing, so it loads after the first screen is visible. */
@@ -115,7 +115,7 @@ function fontsReady(){
 }
 
 /* ---------- splitting articles into magazine pages ---------- */
-const PG_VER=3,PGK='ap_pg_';
+const FS=0.031,PG_VER=4,PGK='ap_pg_';
 const TOC_FIRST=8,TOC_REST=12;
 const tocPageCount=n=>n<=TOC_FIRST?1:1+Math.ceil((n-TOC_FIRST)/TOC_REST);
 function hashIssue(is){
@@ -126,11 +126,14 @@ function hashIssue(is){
 }
 function splitUnits(a){
   if(a._u)return a._u;
-  const poem=a.kind==='कविता';
-  const text=String(a.body||'').replace(/\r\n?/g,'\n').trim();
-  a._u=poem
-    ?{poem,paras:text.split(/\n\s*\n/).map(x=>x.split('\n').map(l=>l.replace(/\s+$/,''))).filter(l=>l.length&&l.join('')!=='')}
-    :{poem,paras:text.split(/\n+/).map(x=>x.trim()).filter(Boolean).map(x=>x.split(/\s+/))};
+  const poem=a.kind==='कविता',BR='\u0001';
+  const text=String(a.body||'').replace(/\r\n?/g,'\n').replace(/^[ \t]*={3,}[^\n]*$/gm,'\n'+BR+'\n').trim();
+  let paras=poem
+    ?text.split(/\n\s*\n/).map(x=>x.split('\n').map(l=>l.replace(/\s+$/,''))).filter(l=>l.length&&l.join('')!=='')
+    :text.split(/\n+/).map(x=>x.trim()).filter(Boolean).map(x=>x.split(/\s+/));
+  const breaks={},out=[];
+  paras.forEach(p=>{if(p.join('').trim()===BR){breaks[out.length]=1}else out.push(p)});
+  a._u={poem,paras:out,breaks};
   return a._u;
 }
 function segHtml(a,seg){
@@ -153,7 +156,7 @@ function getMeasurer(){
 /* Fills one reference page at a time. It only lays out about one page of text per step, then narrows down the exact cut point. */
 function paginateArticle(is,ai){
   const a=is.articles[ai],U=splitUnits(a),paras=U.paras,sep=U.poem?'\n':' ';
-  const pw=420,fs=pw*0.036,host=getMeasurer();
+  const pw=420,fs=pw*FS,host=getMeasurer();
   const el=document.createElement('div');
   el.className='mp';
   el.style.cssText='width:'+pw+'px;height:'+Math.round(pw*1.414)+'px;font-size:'+fs.toFixed(2)+'px';
@@ -165,6 +168,7 @@ function paginateArticle(is,ai){
   const flush=()=>{pages.push({first,seg});if(used>est)est=used;first=false;open()};
   open();
   paras.forEach((toks,pi)=>{
+    if(U.breaks[pi]&&seg.length)flush();
     let i=0;
     while(i<toks.length){
       const remain=toks.length-i,p=document.createElement('p');
@@ -265,7 +269,7 @@ function renderPage(is,d,pw,pageNo,pg){
   el.className='mp';
   el.style.width=pw+'px';
   el.style.height=Math.round(pw*1.414)+'px';
-  el.style.fontSize=(pw*0.036).toFixed(2)+'px';
+  el.style.fontSize=(pw*FS).toFixed(2)+'px';
   const run='<div class="run"><span>'+MAG+'</span><span>'+issueLabel(is)+'</span></div>';
   const folio='<div class="folio"><b>'+dv(pageNo)+'</b></div>';
   if(d.t==='cover'){
@@ -611,7 +615,7 @@ function renderEditor(){
     return '<details class="ed" data-id="'+id+'"'+(S.openId===it.id?' open':'')+'><summary><span><b style="font-family:var(--f-display);font-weight:400;font-size:1.1rem">'+esc(it.title)+'</b> · '+esc(it.name)+'</span><span><span class="chip'+(pub?' pub':'')+'">'+STL[it.status]+'</span> ₹'+dv(it.plan)+'</span></summary><div class="edin">'
      +'<p class="meta">'+esc(it.ref)+' · '+esc(it.kind)+' · '+esc(it.contact)+' · UTR '+esc(it.utr)+'</p>'
      +'<div class="field"><label for="et-'+id+'">शीर्षक</label><input id="et-'+id+'" value="'+esc(it.title)+'"></div>'
-     +'<div class="field"><label for="eb-'+id+'">रचना</label><textarea id="eb-'+id+'" lang="hi">'+esc(it.body)+'</textarea></div>'
+     +'<div class="field"><label for="eb-'+id+'">रचना</label><div class="edtool"><button type="button" class="btn ghost sm" data-act="brk" data-id="'+id+'">＋ यहाँ से नया पन्ना</button><span class="hint">कर्सर जहाँ हो वहाँ पन्ना बदल जाएगा। पन्ना न बदलना हो तो ऐसी पंक्ति (===) हटा दीजिए।</span></div><textarea id="eb-'+id+'" lang="hi">'+esc(it.body)+'</textarea></div>'
      +(pub?'':'<div class="field"><label for="ei-'+id+'">किस अंक में छापें</label><select id="ei-'+id+'">'+(opts||'<option value="">पहले अंक बनाइए</option>')+'</select></div>')
      +'<div class="edbtns"><button class="btn ghost sm" data-act="ed-save" '+at+'>बदलाव सहेजें</button>'
      +(pub?'<button class="btn ghost sm" data-act="ed-unpub" '+at+'>प्रकाशन वापस लें</button>':'<button class="btn sm" data-act="ed-pub" '+at+'>प्रकाशित करें</button>')
@@ -718,6 +722,12 @@ root.addEventListener('click',async e=>{
     const r=await sb.auth.signInWithOtp({email:mail,options:{emailRedirectTo:location.origin+location.pathname}});
     b.disabled=false;
     msg.textContent=r.error?'लिंक नहीं भेजा जा सका। कुछ देर बाद फिर कोशिश कीजिए।':'लिंक भेज दिया गया है। अपना ईमेल खोलकर उस पर क्लिक कीजिए।';
+  }
+  else if(a==='brk'){
+    const t=document.getElementById('eb-'+b.dataset.id);
+    if(t){const p=t.selectionStart,v=t.value,pre=v.slice(0,p).replace(/[ \t]+$/,''),post=v.slice(p).replace(/^[ \t]+/,'');
+      const ins=(pre&&!/\n$/.test(pre)?'\n':'')+'===\n';
+      t.value=pre+ins+post;t.focus();t.selectionStart=t.selectionEnd=(pre+ins).length}
   }
   else if(a==='copy'){
     const fallback=()=>{const r=document.createRange();r.selectNodeContents(document.getElementById('upiId'));const s=getSelection();s.removeAllRanges();s.addRange(r);toast('UPI ID चुना गया है, कॉपी कर लीजिए।')};
