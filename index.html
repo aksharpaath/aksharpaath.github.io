@@ -7,11 +7,12 @@
 <meta property="og:title" content="अक्षरपाठ: मासिक हिंदी पत्रिका">
 <meta property="og:description" content="हर महीने एक अंक। ऑनलाइन पढ़िए, PDF में सहेजिए, अपनी रचना भेजिए।">
 <meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2712%27 fill=%27%238A1C2B%27/%3E%3Ctext x=%2732%27 y=%2748%27 font-size=%2744%27 text-anchor=%27middle%27 fill=%27%23FBF5E8%27 font-family=%27serif%27%3E%E0%A4%85%3C/text%3E%3C/svg%3E">
 <meta name="theme-color" content="#8A1C2B">
 <meta name="description" content="अक्षरपाठ: मासिक हिंदी पत्रिका। पढ़िए, लिखिए, छपिए।">
-<link rel="preload" as="font" type="font/woff2" href="fonts/tiro-devanagari-hindi-devanagari-400-normal.woff2?v=3" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="fonts/hind-devanagari-400-normal.woff2?v=3" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="fonts/noto-serif-devanagari-devanagari-400-normal.woff2?v=3" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="tiro-devanagari-hindi-devanagari-400-normal.woff2?v=3" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="hind-devanagari-400-normal.woff2?v=3" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="noto-serif-devanagari-devanagari-400-normal.woff2?v=3" crossorigin>
 <link rel="preconnect" href="https://lmopyhaiidkhxuvtthmd.supabase.co" crossorigin>
 <style>
 :root{color-scheme:light}
@@ -26,7 +27,7 @@ img{max-width:100%}
   --accent:#8A1C2B; --accent-ink:#FFFFFF; --mark:#D9962B; --danger:#B3261E; --ok:#2F6B3A;
   --paper:#FBF5E8; --paper-ink:#221A17; --paper-muted:#6E5F55; --paper-line:#E2D6BF; --paper-accent:#8A1C2B;
   --f-display:'Tiro Devanagari Hindi','Noto Serif Devanagari',serif;
-  --f-body:'Hind','Noto Sans Devanagari',system-ui,sans-serif;
+  --f-body:'DevDigits','Hind','Noto Sans Devanagari',system-ui,sans-serif;
   --f-read:'Noto Serif Devanagari','Tiro Devanagari Hindi',serif;
 }
 @media (prefers-color-scheme: dark){
@@ -210,13 +211,13 @@ details.ed .meta{font-size:.88rem;color:var(--muted);margin-bottom:12px;overflow
 }
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 
-@font-face{font-family:"Hind";font-weight:400;font-style:normal;font-display:swap;src:url(fonts/hind-devanagari-400-normal.woff2?v=3) format("woff2");unicode-range:U+0900-097F,U+1CD0-1CF9,U+200C-200D,U+20A8,U+20B9,U+25CC,U+A830-A839,U+A8E0-A8FF}
-@font-face{font-family:"Hind";font-weight:600;font-style:normal;font-display:swap;src:url(fonts/hind-devanagari-600-normal.woff2?v=3) format("woff2");unicode-range:U+0900-097F,U+1CD0-1CF9,U+200C-200D,U+20A8,U+20B9,U+25CC,U+A830-A839,U+A8E0-A8FF}
-@font-face{font-family:"Hind";font-weight:400;font-style:normal;font-display:swap;src:url(fonts/hind-latin-400-normal.woff2?v=3) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
-@font-face{font-family:"Hind";font-weight:600;font-style:normal;font-display:swap;src:url(fonts/hind-latin-600-normal.woff2?v=3) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
-@font-face{font-family:"Noto Serif Devanagari";font-weight:400;font-style:normal;font-display:swap;src:url(fonts/noto-serif-devanagari-devanagari-400-normal.woff2?v=3) format("woff2");unicode-range:U+0900-097F,U+1CD0-1CF9,U+200C-200D,U+20A8,U+20B9,U+25CC,U+A830-A839,U+A8E0-A8FF}
-@font-face{font-family:"Noto Serif Devanagari";font-weight:600;font-style:normal;font-display:swap;src:url(fonts/noto-serif-devanagari-devanagari-600-normal.woff2?v=3) format("woff2");unicode-range:U+0900-097F,U+1CD0-1CF9,U+200C-200D,U+20A8,U+20B9,U+25CC,U+A830-A839,U+A8E0-A8FF}
-@font-face{font-family:"Tiro Devanagari Hindi";font-weight:400;font-style:normal;font-display:swap;src:url(fonts/tiro-devanagari-hindi-devanagari-400-normal.woff2?v=3) format("woff2");unicode-range:U+0900-097F,U+1CD0-1CF9,U+200C-200D,U+20A8,U+20B9,U+25CC,U+A830-A839,U+A8E0-A8FF}
+@font-face{font-family:"Hind";font-weight:400;font-style:normal;font-display:swap;src:url(hind-devanagari-400-normal.woff2?v=3) format("woff2");unicode-range:U+0900-097F,U+1CD0-1CF9,U+200C-200D,U+20A8,U+20B9,U+25CC,U+A830-A839,U+A8E0-A8FF}
+@font-face{font-family:"Hind";font-weight:600;font-style:normal;font-display:swap;src:url(hind-devanagari-600-normal.woff2?v=3) format("woff2");unicode-range:U+0900-097F,U+1CD0-1CF9,U+200C-200D,U+20A8,U+20B9,U+25CC,U+A830-A839,U+A8E0-A8FF}
+@font-face{font-family:"Hind";font-weight:400;font-style:normal;font-display:swap;src:url(hind-latin-400-normal.woff2?v=3) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Hind";font-weight:600;font-style:normal;font-display:swap;src:url(hind-latin-600-normal.woff2?v=3) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Noto Serif Devanagari";font-weight:400;font-style:normal;font-display:swap;src:url(noto-serif-devanagari-devanagari-400-normal.woff2?v=3) format("woff2");unicode-range:U+0900-097F,U+1CD0-1CF9,U+200C-200D,U+20A8,U+20B9,U+25CC,U+A830-A839,U+A8E0-A8FF}
+@font-face{font-family:"Noto Serif Devanagari";font-weight:600;font-style:normal;font-display:swap;src:url(noto-serif-devanagari-devanagari-600-normal.woff2?v=3) format("woff2");unicode-range:U+0900-097F,U+1CD0-1CF9,U+200C-200D,U+20A8,U+20B9,U+25CC,U+A830-A839,U+A8E0-A8FF}
+@font-face{font-family:"Tiro Devanagari Hindi";font-weight:400;font-style:normal;font-display:swap;src:url(tiro-devanagari-hindi-devanagari-400-normal.woff2?v=3) format("woff2");unicode-range:U+0900-097F,U+1CD0-1CF9,U+200C-200D,U+20A8,U+20B9,U+25CC,U+A830-A839,U+A8E0-A8FF}
 
 /* skeleton while the first load is in progress */
 .skel{background:linear-gradient(90deg,var(--line,#ddd) 25%,rgba(255,255,255,.4) 50%,var(--line,#ddd) 75%);background-size:200% 100%;animation:sk 1.2s linear infinite;border-radius:6px}
@@ -236,6 +237,31 @@ details.ed .meta{font-size:.88rem;color:var(--muted);margin-bottom:12px;overflow
 .tocbtn{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--paper-line);padding:.8rem 0;font:inherit;color:inherit;cursor:pointer}
 .tocbtn .t{display:block;font-family:var(--f-display);font-size:1.2rem;line-height:1.4}
 .tocbtn .s{display:block;font-family:var(--f-body);font-size:.82rem;color:var(--paper-muted)}
+/* Hind draws Devanagari digits like Latin ones, so digits use the serif face */
+@font-face{font-family:"DevDigits";font-weight:400;font-style:normal;font-display:swap;src:url(noto-serif-devanagari-devanagari-400-normal.woff2?v=3) format("woff2");unicode-range:U+0966-096F}
+@font-face{font-family:"DevDigits";font-weight:600;font-style:normal;font-display:swap;src:url(noto-serif-devanagari-devanagari-600-normal.woff2?v=3) format("woff2");unicode-range:U+0966-096F}
+/* footer and information pages */
+.foot{margin-top:56px;padding-block:32px 8px}
+.footgrid{display:grid;grid-template-columns:minmax(0,1.6fr) repeat(2,minmax(0,1fr));gap:28px}
+.foot-brand{font-family:var(--f-display);font-size:1.7rem;line-height:1.3;color:var(--ink)}
+.foot p{margin:4px 0 0;max-width:30ch}
+.foot h4{font-size:.8rem;letter-spacing:.04em;margin:0 0 8px;color:var(--ink)}
+.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.foot li button{background:none;border:0;padding:6px 0;color:var(--muted);font:inherit;cursor:pointer;min-height:36px}
+.foot li button:hover{color:var(--accent);text-decoration:underline}
+.footbase{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 24px;margin-top:24px;padding-top:14px;border-top:1px solid var(--line);font-size:.82rem}
+.prose{max-width:680px;padding-block:8px;font-size:1.05rem;line-height:1.9}
+.prose h2{font-size:1.45rem;margin:30px 0 8px}
+.prose p,.prose ol{margin:0 0 14px}
+.prose ol{padding-left:1.3em}
+.prose li{margin-bottom:6px}
+.tblwrap{overflow-x:auto;margin-bottom:14px}
+.prose table{border-collapse:collapse;width:100%;font-size:.98rem}
+.prose th,.prose td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
+.prose th{font-weight:600;color:var(--muted);font-size:.85rem}
+@media(max-width:640px){.footgrid{grid-template-columns:1fr 1fr}.footgrid>div:first-child{grid-column:1/-1}}
+.toc .pg:empty{display:none}
+.prose ol{list-style-type:devanagari}
 </style>
 </head>
 <body>
@@ -243,6 +269,6 @@ details.ed .meta{font-size:.88rem;color:var(--muted);margin-bottom:12px;overflow
 <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 <noscript><main style="max-width:640px;margin:0 auto;padding:32px 20px;font-family:serif;line-height:1.8"><h1>अक्षरपाठ</h1><p>मासिक हिंदी पत्रिका। हर महीने एक अंक, जिसमें कविता, कहानी, लेख और संस्मरण छपते हैं। हर अंक ऑनलाइन पढ़ा जा सकता है और PDF में सहेजा जा सकता है। कोई भी लेखक अपनी रचना भेज सकता है।</p><p>पत्रिका पढ़ने और रचना भेजने के लिए अपने ब्राउज़र में JavaScript चालू कीजिए।</p></main></noscript>
 <script src="config.js"></script>
-<script src="app.js?v=4" defer></script>
+<script src="app.js?v=6" defer></script>
 </body>
 </html>

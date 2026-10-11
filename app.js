@@ -2,13 +2,13 @@
 'use strict';
 const CFG=window.APCONFIG||{};
 const DEMO=!CFG.SUPABASE_URL||!CFG.SUPABASE_ANON_KEY;
-const V='4';
+const V='6';
 let sb=null,sbP=null;
 function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>rej(new Error('load '+src));document.head.appendChild(s)})}
 /* The Supabase client is only needed for sign-in, submitting and editing, so it loads after the first screen is visible. */
 function getSB(){
   if(DEMO)return Promise.resolve(null);
-  if(!sbP)sbP=(window.supabase?Promise.resolve():loadScript('vendor/supabase.js?v='+V)).then(()=>{sb=window.supabase.createClient(CFG.SUPABASE_URL,CFG.SUPABASE_ANON_KEY);return sb});
+  if(!sbP)sbP=(window.supabase?Promise.resolve():loadScript('supabase.js?v='+V)).then(()=>{sb=window.supabase.createClient(CFG.SUPABASE_URL,CFG.SUPABASE_ANON_KEY);return sb});
   return sbP;
 }
 const UPI_ID=CFG.UPI_ID||'yourname@upi';
@@ -445,19 +445,44 @@ function editorView(){
    +'<div id="issuebox" style="margin-top:20px"></div><h2 style="font-size:1.4rem;margin:28px 0 12px">जमा हुई रचनाएँ</h2><div id="edlist"></div></section>';
 }
 
+function footer(){
+  const l=(v,t)=>'<li><button data-act="nav" data-v="'+v+'">'+t+'</button></li>';
+  return '<footer class="wrap foot"><div class="footgrid"><div><div class="foot-brand">'+MAG+'</div><p>मासिक हिंदी पत्रिका। पढ़िए, लिखिए, छपिए।</p></div>'
+   +'<nav aria-label="पत्रिका"><h4>पत्रिका</h4><ul>'+l('home','वर्तमान अंक')+l('archive','अंक-संग्रह')+l('submit','रचना भेजें')+'</ul></nav>'
+   +'<nav aria-label="जानकारी"><h4>जानकारी</h4><ul>'+l('about','परिचय')+l('guide','लेखक निर्देश')+'</ul></nav></div>'
+   +'<div class="footbase"><span>© '+dv(new Date().getFullYear())+' '+MAG+'</span>'+(DEMO?'<span>डेमो: इस दृश्य में दिखाई गई रचनाएँ नमूना सामग्री हैं।</span>':'')+'</div></footer>';
+}
+function aboutView(){
+  return '<section class="wrap"><div class="page-h"><h1>परिचय</h1><p>'+MAG+' क्या है</p></div><article class="prose">'
+   +'<p>'+MAG+' एक मासिक हिंदी पत्रिका है। “पाठ” का अर्थ है पढ़ना। इस पत्रिका का मक़सद है कि अक्षरों को पढ़ने और लिखने की आदत एक साझा जगह पर जीवित रहे।</p>'
+   +'<p>यहाँ कोई भी लेखक अपनी रचना भेज सकता है: कविता, कहानी, लेख, संस्मरण या यात्रा-वृत्त। जाँच के बाद चुनी गई रचनाएँ अगले मासिक अंक में छपती हैं। हर अंक में वर्ष, अंक संख्या, माह और पृष्ठ संख्या दर्ज रहती है, ताकि हर रचना का हवाला दिया जा सके।</p>'
+   +'<p>हर अंक वेबसाइट पर पढ़ा जा सकता है और पूरा अंक PDF के रूप में सहेजा भी जा सकता है।</p>'
+   +'<p><button class="btn" data-act="nav" data-v="submit">अपनी रचना भेजें</button></p></article></section>';
+}
+function guideView(){
+  const plans=Object.keys(PLANS).map(k=>'<tr><td><b>₹'+dv(k)+'</b></td><td>'+PLANS[k].name+'</td><td>'+PLANS[k].kinds+'</td></tr>').join('');
+  return '<section class="wrap"><div class="page-h"><h1>लेखक निर्देश</h1><p>रचना भेजने से पहले यह पढ़ लीजिए</p></div><article class="prose">'
+   +'<h2>कैसे भेजें</h2><ol><li>“रचना भेजें” पृष्ठ पर अपने ईमेल से साइन-इन कीजिए। पासवर्ड नहीं लगता।</li><li>नाम, शहर, संपर्क, विधा, शीर्षक और रचना भरिए। रचना सीधे चिपकाई जा सकती है।</li><li>प्रकाशन शुल्क चुनिए, UPI से भुगतान कीजिए और लेन-देन संख्या (UTR) लिखिए।</li><li>जमा करने पर आपको एक संदर्भ संख्या मिलती है।</li></ol>'
+   +'<h2>प्रकाशन शुल्क</h2><div class="tblwrap"><table><thead><tr><th>शुल्क</th><th>श्रेणी</th><th>उदाहरण</th></tr></thead><tbody>'+plans+'</tbody></table></div>'
+   +'<h2>लंबाई</h2><p>रचना की लंबाई की कोई सीमा नहीं है। लंबी रचना अपने आप कई पृष्ठों में बँट जाती है।</p>'
+   +'<h2>बदलाव कब तक</h2><p>प्रकाशन से पहले आप अपनी रचना “मेरी भेजी रचनाएँ” में जाकर बदल सकते हैं। प्रकाशन के बाद बदलाव केवल संपादक कर सकते हैं।</p>'
+   +'<h2>मौलिकता</h2><p>रचना आपकी अपनी होनी चाहिए। रचना भेजते समय आप उसे '+MAG+' में प्रकाशित करने की अनुमति देते हैं।</p>'
+   +'<p><button class="btn" data-act="nav" data-v="submit">रचना भेजें</button></p></article></section>';
+}
+
 function renderMain(){
   const m=document.getElementById('main');if(!m){render();return}
   const body=S.view==='home'?homeView():S.view==='archive'?archiveView():S.view==='reader'?readerView():null;
   if(body==null)return;
-  m.innerHTML=body+'<div class="wrap foot">'+(DEMO?'डेमो: इस दृश्य में दिखाई गई रचनाएँ नमूना सामग्री हैं।':'© अक्षरपाठ')+'</div>';
+  m.innerHTML=body+footer()+'';
   mountAll();
 }
 function render(){
   if(S.view!=='submit')S.editRef=null;
   if(S.view!=='editor')S.scrolled=null;
   if(S.view==='editor'&&!isEditor())S.view='home';
-  const body=S.view==='home'?homeView():S.view==='archive'?archiveView():S.view==='reader'?readerView():S.view==='editor'?editorView():submitGate();
-  root.innerHTML='<div id="hdr">'+header()+'</div><div id="main">'+body+'<div class="wrap foot">'+(DEMO?'डेमो: इस दृश्य में दिखाई गई रचनाएँ नमूना सामग्री हैं।':'© अक्षरपाठ')+'</div></div>';
+  const body=S.view==='home'?homeView():S.view==='archive'?archiveView():S.view==='reader'?readerView():S.view==='editor'?editorView():S.view==='about'?aboutView():S.view==='guide'?guideView():submitGate();
+  root.innerHTML='<div id="hdr">'+header()+'</div><div id="main">'+body+footer()+'</div>';
   mountAll();
   if(S.view==='submit'&&S.user&&!DEMO){restoreDraft();updateCount();loadMine()}
   if(S.view==='editor')loadEditor();
@@ -631,8 +656,8 @@ async function makePDF(i){
   stage.style.cssText='position:fixed;left:-10000px;top:0;';
   document.body.appendChild(stage);
   try{
-    if(!window.html2canvas)await loadScript('vendor/html2canvas.min.js?v='+V);
-    if(!window.jspdf)await loadScript('vendor/jspdf.umd.min.js?v='+V);
+    if(!window.html2canvas)await loadScript('html2canvas.min.js?v='+V);
+    if(!window.jspdf)await loadScript('jspdf.umd.min.js?v='+V);
     await fontsReady();
     const pg=await paginateAsync(is),n=pg.pages.length;
     const pdf=new window.jspdf.jsPDF({unit:'mm',format:'a5',orientation:'portrait'});
